@@ -129,7 +129,7 @@ def panel_url_validator(url):
     print(colored("Checking URL...", "yellow"))
     try:
         cookies = requests.get(url).cookies
-        url_tmp = url.split('/a4c24ea5-6d1a-4c6e-8dfd-4f61ac1812d0/')[0]
+        url_tmp = url.split('/a4c24ea5-6d1a-4c6e-8dfd-4f61ac1812d0/')[0] + '/admin/'
         request = requests.get(f"{url_tmp}/admin/")
     except requests.exceptions.ConnectionError as e:
         print(colored("URL is not valid! Error in connection", "red"))
