@@ -22,7 +22,7 @@ LOG_LOC = os.path.join(LOG_DIR, "hidyBot.log")
 BACKUP_LOC = os.path.join(os.getcwd(), "Backup")
 RECEIPTIONS_LOC = os.path.join(os.getcwd(), "UserBot", "Receiptions")
 BOT_BACKUP_LOC = os.path.join(os.getcwd(), "Backup", "Bot")
-API_PATH = "/api/v1"
+API_PATH = "/api/v2"
 HIDY_BOT_ID = "@HidyBotGroup"
 
 # if directories not exists, create it

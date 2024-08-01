@@ -12,15 +12,38 @@ import Utils
 # Document: https://github.com/hiddify/hiddify-config/discussions/3209
 # It not in uses now, but it will be used in the future.
 
+def _fetch_data(url, endpoint, max_retries=1):
+    api_v2 = 'api/v2'
+    panel_url = url
+    url_api = f"{url}/{API_PATH}/{endpoint}"
+    retries = 0
+    while retries < max_retries:
+        try:
+            try:
+                panel_response = requests.get(panel_url)
+                panel_response.raise_for_status()
+                cookies = panel_response.cookies
+                print(f"Cookies extracted for {endpoint}")
+            except requests.exceptions.RequestException as e:
+                print(f"{e}")
+            response = requests.get(url_api, cookies=cookies)
+            response.raise_for_status()
+            return response.json()
+        except requests.exceptions.RequestException as e:
+            print(f"Failed to fetch data from {endpoint}. Error: {e}")
+            retries += 1
+    print(f"Maximum retries exceeded for {endpoint}. Returning None.")
+    return None
 
 
-def select(url, endpoint="/user/"):
+
+def select(url, endpoint="admin/user"):
     try:
-        response = requests.get(url + endpoint)
-        res = Utils.utils.dict_process(url, Utils.utils.users_to_dict(response.json()))
+        response = _fetch_data(url, endpoint)
+        res = Utils.utils.dict_process(url, Utils.utils.users_to_dict(response))
         return res
     except Exception as e:
-        logging.error("API error: %s" % e)
+        print("API error: %s" % e)
         return None
 
 def find(url, uuid, endpoint="/user/"):
@@ -35,7 +58,7 @@ def find(url, uuid, endpoint="/user/"):
             return None
         return jr[0]
     except Exception as e:
-        logging.error("API error: %s" % e)
+        print("API error: %s" % e)
         return None
 
 def insert(url, name, usage_limit_GB, package_days, last_reset_time=None, added_by_uuid=None, mode="no_reset",
@@ -69,7 +92,7 @@ def insert(url, name, usage_limit_GB, package_days, last_reset_time=None, added_
         response = requests.post(url + endpoint, data=jdata, headers={'Content-Type': 'application/json'})
         return uuid
     except Exception as e:
-        logging.error("API error: %s" % e)
+        print("API error: %s" % e)
         return None
 
 def update(url, uuid, endpoint="/user/", **kwargs, ):
@@ -84,6 +107,6 @@ def update(url, uuid, endpoint="/user/", **kwargs, ):
                                     headers={'Content-Type': 'application/json'})
         return uuid
     except Exception as e:
-        logging.error("API error: %s" % e)
+        print("API error: %s" % e)
         return None
 
