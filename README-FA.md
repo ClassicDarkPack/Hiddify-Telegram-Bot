@@ -1,10 +1,10 @@
 
 
 <p align="center">
-  <a href="https://github.com/B3H1Z/Hiddify-Telegram-Bot" target="_blank" rel="noopener noreferrer">
+  <a href="https://github.com/Issei-177013/Hiddify-Telegram-Bot" target="_blank" rel="noopener noreferrer">
     <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="https://github.com/B3H1Z/Hiddify-Telegram-Bot/blob/main/Screenshots/icon.png?raw=True">
-      <img width="200" height="200" src="https://github.com/B3H1Z/Hiddify-Telegram-Bot/blob/main/Screenshots/icon.png?raw=True">
+      <source media="(prefers-color-scheme: dark)" srcset="https://github.com/Issei-177013/Hiddify-Telegram-Bot/blob/main/Screenshots/icon.png?raw=True">
+      <img width="200" height="200" src="https://github.com/Issei-177013/Hiddify-Telegram-Bot/blob/main/Screenshots/icon.png?raw=True">
     </picture>
   </a>
 </p>
@@ -44,7 +44,7 @@
 برای نصب ربات دستور زیر را اجرا کنید:
  
 ```bash
-sudo bash -c "$(curl -Lfo- https://raw.githubusercontent.com/B3H1Z/Hiddify-Telegram-Bot/main/install.sh)"
+sudo bash -c "$(curl -Lfo- https://raw.githubusercontent.com/Issei-177013/Hiddify-Telegram-Bot/main/install.sh)"
 ```
 <br>
 
@@ -64,7 +64,7 @@ sudo bash -c "$(curl -Lfo- https://raw.githubusercontent.com/B3H1Z/Hiddify-Teleg
 ## دستورات
  به‌روزرسانی ربات
 ```bash
-cd /opt/Hiddify-Telegram-Bot/ && curl -fsSL -o /opt/Hiddify-Telegram-Bot/update.sh https://raw.githubusercontent.com/B3H1Z/Hiddify-Telegram-Bot/main/update.sh && chmod +x /opt/Hiddify-Telegram-Bot/update.sh && bash /opt/Hiddify-Telegram-Bot/update.sh
+cd /opt/Hiddify-Telegram-Bot/ && curl -fsSL -o /opt/Hiddify-Telegram-Bot/update.sh https://raw.githubusercontent.com/Issei-177013/Hiddify-Telegram-Bot/main/update.sh && chmod +x /opt/Hiddify-Telegram-Bot/update.sh && bash /opt/Hiddify-Telegram-Bot/update.sh
 ```
  راه‌اندازی مجدد ربات
 ```bash
@@ -85,7 +85,7 @@ cd /opt/Hiddify-Telegram-Bot/ && python3 config.py && chmod +x restart.sh && ./r
 ```
  نصب مجدد ربات
 ```bash
-cd /opt/ && rm -rf /opt/Hiddify-Telegram-Bot/ && sudo bash -c "$(curl -Lfo- https://raw.githubusercontent.com/B3H1Z/Hiddify-Telegram-Bot/main/install.sh)"
+cd /opt/ && rm -rf /opt/Hiddify-Telegram-Bot/ && sudo bash -c "$(curl -Lfo- https://raw.githubusercontent.com/Issei-177013/Hiddify-Telegram-Bot/main/install.sh)"
 ```
   حذف ربات
 ```bash
@@ -94,16 +94,16 @@ cd /opt/Hiddify-Telegram-Bot/ && chmod +x uninstall.sh && ./uninstall.sh
 
 ## اسکرین شات‌ها
 #### ربات کاربران 
-- <img src="https://github.com/B3H1Z/Hiddify-Telegram-Bot/blob/main/Screenshots/scr-u-1.jpg?raw=True" width=35% height=35%>
-- <img src="https://github.com/B3H1Z/Hiddify-Telegram-Bot/blob/main/Screenshots/scr-u-2.jpg?raw=True" width=35% height=35%>
-- <img src="https://github.com/B3H1Z/Hiddify-Telegram-Bot/blob/main/Screenshots/scr-u-3.jpg?raw=True" width=35% height=35%>
-- <img src="https://github.com/B3H1Z/Hiddify-Telegram-Bot/blob/main/Screenshots/scr-u-4.jpg?raw=True" width=35% height=35%>
+- <img src="https://github.com/Issei-177013/Hiddify-Telegram-Bot/blob/main/Screenshots/scr-u-1.jpg?raw=True" width=35% height=35%>
+- <img src="https://github.com/Issei-177013/Hiddify-Telegram-Bot/blob/main/Screenshots/scr-u-2.jpg?raw=True" width=35% height=35%>
+- <img src="https://github.com/Issei-177013/Hiddify-Telegram-Bot/blob/main/Screenshots/scr-u-3.jpg?raw=True" width=35% height=35%>
+- <img src="https://github.com/Issei-177013/Hiddify-Telegram-Bot/blob/main/Screenshots/scr-u-4.jpg?raw=True" width=35% height=35%>
 #### ربات ادمین
-- <img src="https://github.com/B3H1Z/Hiddify-Telegram-Bot/blob/main/Screenshots/scr-a-1.jpg?raw=True" width=35% height=35%>
-- <img src="https://github.com/B3H1Z/Hiddify-Telegram-Bot/blob/main/Screenshots/scr-a-2.jpg?raw=True" width=35% height=35%>
-- <img src="https://github.com/B3H1Z/Hiddify-Telegram-Bot/blob/main/Screenshots/scr-a-6.jpg?raw=True" width=35% height=35%>
-- <img src="https://github.com/B3H1Z/Hiddify-Telegram-Bot/blob/main/Screenshots/scr-a-8.jpg?raw=True" width=35% height=35%>
-- <img src="https://github.com/B3H1Z/Hiddify-Telegram-Bot/blob/main/Screenshots/scr-a-5.jpg?raw=True" width=35% height=35%>
-- <img src="https://github.com/B3H1Z/Hiddify-Telegram-Bot/blob/main/Screenshots/scr-a-3.jpg?raw=True" width=35% height=35%>
-- <img src="https://github.com/B3H1Z/Hiddify-Telegram-Bot/blob/main/Screenshots/scr-a-4.jpg?raw=True" width=35% height=35%>
-- <img src="https://github.com/B3H1Z/Hiddify-Telegram-Bot/blob/main/Screenshots/scr-a-7.jpg?raw=True" width=35% height=35%>
+- <img src="https://github.com/Issei-177013/Hiddify-Telegram-Bot/blob/main/Screenshots/scr-a-1.jpg?raw=True" width=35% height=35%>
+- <img src="https://github.com/Issei-177013/Hiddify-Telegram-Bot/blob/main/Screenshots/scr-a-2.jpg?raw=True" width=35% height=35%>
+- <img src="https://github.com/Issei-177013/Hiddify-Telegram-Bot/blob/main/Screenshots/scr-a-6.jpg?raw=True" width=35% height=35%>
+- <img src="https://github.com/Issei-177013/Hiddify-Telegram-Bot/blob/main/Screenshots/scr-a-8.jpg?raw=True" width=35% height=35%>
+- <img src="https://github.com/Issei-177013/Hiddify-Telegram-Bot/blob/main/Screenshots/scr-a-5.jpg?raw=True" width=35% height=35%>
+- <img src="https://github.com/Issei-177013/Hiddify-Telegram-Bot/blob/main/Screenshots/scr-a-3.jpg?raw=True" width=35% height=35%>
+- <img src="https://github.com/Issei-177013/Hiddify-Telegram-Bot/blob/main/Screenshots/scr-a-4.jpg?raw=True" width=35% height=35%>
+- <img src="https://github.com/Issei-177013/Hiddify-Telegram-Bot/blob/main/Screenshots/scr-a-7.jpg?raw=True" width=35% height=35%>
