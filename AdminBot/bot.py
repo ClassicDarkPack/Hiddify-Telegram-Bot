@@ -1637,6 +1637,7 @@ def callback_query(call: CallbackQuery):
         
     elif key == "server_list_of_users":
         bot.send_message(call.message.chat.id, MESSAGES['SUCCESS_SEARCH_USER'])
+        logging.error(f'{URL}')
         users_list = api.select(URL)
         logging.error(f'{users_list}')
         search_mode = "Single"
