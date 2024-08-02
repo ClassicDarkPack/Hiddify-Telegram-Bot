@@ -39,7 +39,7 @@ if not os.path.exists(RECEIPTIONS_LOC):
 logging.basicConfig(handlers=[logging.FileHandler(filename=LOG_LOC,
                                                   encoding='utf-8', mode='w')],
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                    level=logging.INFO)
+                    level=logging.DEBUG)
 
 
 def setup_users_db():

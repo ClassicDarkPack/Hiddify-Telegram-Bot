@@ -9,10 +9,7 @@ import requests
 from config import API_PATH
 import Utils
 
-# تنظیمات لاگ
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
-
-def _fetch_data(url, endpoint, max_retries=1):
+def _fetch_data(url, endpoint, max_retries=3):
     logging.debug(f'fetch url arg: {url}')
     split_url = re.sub(r'/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}', '', url)
     logging.debug(f'split_url: {split_url}')
