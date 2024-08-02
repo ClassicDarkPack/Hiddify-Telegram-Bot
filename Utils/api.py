@@ -52,6 +52,7 @@ def select(url, endpoint="/user/"):
         return res
     except Exception as e:
         print("API error:", e)
+        logging.error(f'{e}')
         return None
 
 def find(url, uuid, endpoint="/user/"):
