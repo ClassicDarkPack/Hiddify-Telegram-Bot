@@ -11,15 +11,17 @@ import Utils
 
 def _fetch_data(url, endpoint, max_retries=3):
     logging.debug(f'fetch url arg: {url}')
-    split_url = re.sub(r'/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}', '', url)
-    logging.debug(f'split_url: {split_url}')
-    url_api = f"{split_url}/{endpoint}"
+    panel_url = re.sub(r'/api/v2$', '', url)
+    logging.debug(f'panel_url: {panel_url}')
+    api_url = re.sub(r'/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}', '', url)
+    logging.debug(f'api_url: {api_url}')
+    url_api = f"{api_url}/{endpoint}"
     logging.debug(f'url_api: {url_api}')
     retries = 0
     while retries < max_retries:
         try:
-            logging.debug(f'Trying to fetch panel response from {url}')
-            panel_response = requests.get(url)
+            logging.debug(f'Trying to fetch panel response from {panel_url}')
+            panel_response = requests.get(panel_url)
             panel_response.raise_for_status()
             cookies = panel_response.cookies
             logging.debug(f'Cookies extracted for {endpoint}: {cookies}')
