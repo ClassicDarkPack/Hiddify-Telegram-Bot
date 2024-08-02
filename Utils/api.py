@@ -42,13 +42,15 @@ def select(url, endpoint="admin/user/"):
     try:
         response = _fetch_data(url, endpoint)
         if response is None:
+            logging.error(f'No response received from the API.')
             print("No response received from the API.")
             return None
-        
+        logging.error(f'Response received from API:, {response}')
         print("Response received from API:", response)
         
         users_dict = Utils.utils.users_to_dict(response)
         if not users_dict:
+            logging.error(f'No users found in response.')
             print("No users found in response.")
             return None
         
