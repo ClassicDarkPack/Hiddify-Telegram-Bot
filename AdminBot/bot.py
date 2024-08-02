@@ -1636,6 +1636,7 @@ def callback_query(call: CallbackQuery):
                          reply_markup=plans_markup)
         
     elif key == "server_list_of_users":
+        bot.send_message(call.message.chat.id, MESSAGES['SUCCESS_SEARCH_USER'])
         users_list = api.select(url="https://star1.starconfig.ir/luSuxdwFpP7VU7CrhlB/dc57cd45-7bff-4caa-8b0c-0f532076f36c")
         search_mode = "Single"
         if not users_list:
