@@ -1637,7 +1637,6 @@ def callback_query(call: CallbackQuery):
         
     elif key == "server_list_of_users":
         users_list = api.select(URL)
-        bot.send_message(call.message.chat.id, MESSAGES[f'{users_list}'])
         search_mode = "Single"
         if not users_list:
             bot.send_message(call.message.chat.id, MESSAGES['ERROR_USER_NOT_FOUND'])
