@@ -14,8 +14,11 @@ import Utils
 # It not in uses now, but it will be used in the future.
 
 def _fetch_data(url, endpoint, max_retries=1):
+    logging.error(f'fetch url arg: {url}')
     split_url = re.sub(r'/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}', '', url);
-    url_api = f"{split_url}/{API_PATH}/{endpoint}"
+    logging.error(f'split_url: {split_url}')
+    url_api = f"{split_url}/{endpoint}"
+    logging.error(f'url_api: {url_api}')
     retries = 0
     while retries < max_retries:
         try:
@@ -35,6 +38,7 @@ def _fetch_data(url, endpoint, max_retries=1):
 
 
 def select(url, endpoint="/user/"):
+    logging.error(f'select: {url}')
     try:
         response = _fetch_data(url, endpoint)
         if response is None:
