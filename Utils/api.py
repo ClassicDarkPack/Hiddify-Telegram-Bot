@@ -1,5 +1,6 @@
 # from config import *
 # from Utils.utils import *
+import re
 import json
 import logging
 from urllib.parse import urlparse
@@ -13,19 +14,16 @@ import Utils
 # It not in uses now, but it will be used in the future.
 
 def _fetch_data(url, endpoint, max_retries=1):
-    api_v2 = 'api/v2'
-    panel_url = url
-    url_api = f"{url}/{API_PATH}/{endpoint}"
+    split_url = re.sub(r'/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}', '', url);
+    url_api = f"{split_url}/{API_PATH}/{endpoint}"
     retries = 0
     while retries < max_retries:
         try:
-            try:
-                panel_response = requests.get(panel_url)
-                panel_response.raise_for_status()
-                cookies = panel_response.cookies
-                print(f"Cookies extracted for {endpoint}")
-            except requests.exceptions.RequestException as e:
-                print(f"{e}")
+            panel_response = requests.get(url)
+            panel_response.raise_for_status()
+            cookies = panel_response.cookies
+            print(f"Cookies extracted for {endpoint}")
+            
             response = requests.get(url_api, cookies=cookies)
             response.raise_for_status()
             return response.json()
@@ -36,14 +34,24 @@ def _fetch_data(url, endpoint, max_retries=1):
     return None
 
 
-
 def select(url, endpoint="admin/user"):
     try:
         response = _fetch_data(url, endpoint)
-        res = Utils.utils.dict_process(url, Utils.utils.users_to_dict(response))
+        if response is None:
+            print("No response received from the API.")
+            return None
+        
+        print("Response received from API:", response)
+        
+        users_dict = Utils.utils.users_to_dict(response)
+        if not users_dict:
+            print("No users found in response.")
+            return None
+        
+        res = Utils.utils.dict_process(users_dict)
         return res
     except Exception as e:
-        print("API error: %s" % e)
+        print("API error:", e)
         return None
 
 def find(url, uuid, endpoint="/user/"):
