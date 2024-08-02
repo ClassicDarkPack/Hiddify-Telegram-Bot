@@ -34,7 +34,7 @@ def _fetch_data(url, endpoint, max_retries=1):
     return None
 
 
-def select(url, endpoint="admin/user"):
+def select(url, endpoint="/user/"):
     try:
         response = _fetch_data(url, endpoint)
         if response is None:
