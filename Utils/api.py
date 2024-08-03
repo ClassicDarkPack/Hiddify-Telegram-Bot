@@ -1,14 +1,11 @@
 import re
 import json
 import logging
-from urllib.parse import urlparse
 import datetime
 import requests
-import Utils.utils
-from config import API_PATH
-import Utils
-from config import *
+from urllib.parse import urlparse
 from Utils import utils
+from config import API_PATH
 
 def _fetch_data(url, endpoint, max_retries=3):
     logging.debug(f'fetch url arg: {url}')
@@ -57,7 +54,6 @@ def select(url, endpoint="admin/user"):
     except Exception as e:
         logging.error(f"API error: {e}")
         return None
-    
 
 def find(url, uuid, endpoint="/user/"):
     logging.debug(f'find: url={url}, uuid={uuid}, endpoint={endpoint}')
@@ -78,11 +74,10 @@ def find(url, uuid, endpoint="/user/"):
         return None
 
 def insert(url, name, usage_limit_GB, package_days, last_reset_time=None, added_by_uuid=None, mode="no_reset",
-            last_online="1-01-01 00:00:00", telegram_id=None,
-            comment=None, current_usage_GB=0, start_date=None, endpoint="/user/"):
+           last_online="1-01-01 00:00:00", telegram_id=None, comment=None, current_usage_GB=0, start_date=None, endpoint="/user/"):
     logging.debug(f'insert: url={url}, name={name}, usage_limit_GB={usage_limit_GB}, package_days={package_days}')
-    import uuid
-    uuid = str(uuid.uuid4())
+    import uuid as uuid_lib
+    uuid = str(uuid_lib.uuid4())
     added_by_uuid = urlparse(url).path.split('/')[2]
     last_reset_time = datetime.datetime.now().strftime("%Y-%m-%d")
 
@@ -121,8 +116,7 @@ def update(url, uuid, endpoint="/user/", **kwargs):
         for key in kwargs:
             user[key] = kwargs[key]
         logging.debug(f'Updated user data: {user}')
-        response = requests.post(url + endpoint, data=json.dumps(user),
-                                    headers={'Content-Type': 'application/json'})
+        response = requests.post(url + endpoint, data=json.dumps(user), headers={'Content-Type': 'application/json'})
         response.raise_for_status()
         logging.debug(f'Update response: {response.json()}')
         return uuid
