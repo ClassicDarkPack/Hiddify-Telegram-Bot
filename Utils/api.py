@@ -54,7 +54,7 @@ def select(url, endpoint="admin/user"):
         res = dict_process(url, users_dict, server_id=None)  # ارسال url و users_dict و server_id
         return res
     except Exception as e:
-        print("API error:", e)
+        logging.error(f"API error: {e}")
         return None
     
 
