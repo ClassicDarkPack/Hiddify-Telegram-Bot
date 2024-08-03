@@ -4,10 +4,11 @@ import logging
 from urllib.parse import urlparse
 import datetime
 import requests
+import Utils.utils
 from config import API_PATH
 import Utils
 from config import *
-from Utils.utils import *
+from Utils import utils
 
 def _fetch_data(url, endpoint, max_retries=3):
     logging.debug(f'fetch url arg: {url}')
@@ -46,12 +47,12 @@ def select(url, endpoint="admin/user"):
         
         print("Response received from API:", response)
         
-        users_dict = users_to_dict(response)
+        users_dict = utils.users_to_dict(response)
         if not users_dict:
             print("No users found in response.")
             return None
         
-        res = dict_process(url, users_dict, server_id=None)  # ارسال url و users_dict و server_id
+        res = utils.dict_process(url, users_dict, server_id=None)  # ارسال url و users_dict و server_id
         return res
     except Exception as e:
         logging.error(f"API error: {e}")
