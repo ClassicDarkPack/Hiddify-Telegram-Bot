@@ -9,6 +9,7 @@ from config import API_PATH
 def interaction(url, endpoint, method='GET', data=None, max_retries=3, timeout=10):
     logging.debug(f'base_url: {url}')
     api_url, api_key = utils.extract_key_from_url(url)
+    api_url = api_url + endpoint
     logging.debug(f'api_key: {api_key}')
     logging.debug(f'api_url: {api_url}')
     
@@ -36,7 +37,7 @@ def interaction(url, endpoint, method='GET', data=None, max_retries=3, timeout=1
     logging.error(f"Maximum retries exceeded for {endpoint}. Returning None.")
     return None
 
-def select(url, endpoint="admin/user"):
+def select(url, endpoint="/admin/user"):
     try:
         response = interaction(url, endpoint)
         if response is None:
@@ -56,7 +57,7 @@ def select(url, endpoint="admin/user"):
         logging.error(f"API error: {e}")
         return None
 
-def find(url, uuid, endpoint="admin/user"):
+def find(url, uuid, endpoint="/admin/user"):
     logging.debug(f'find: url={url}, uuid={uuid}, endpoint={endpoint}')
     try:
         response = interaction(url, f"{endpoint}/{uuid}", method='GET')
@@ -70,7 +71,7 @@ def find(url, uuid, endpoint="admin/user"):
         return None
 
 def insert(url, name, usage_limit_GB, package_days, last_reset_time=None, added_by_uuid=None, mode="no_reset",
-           last_online="1-01-01 00:00:00", telegram_id=None, comment=None, current_usage_GB=0, start_date=None, endpoint="admin/user"):
+           last_online="1-01-01 00:00:00", telegram_id=None, comment=None, current_usage_GB=0, start_date=None, endpoint="/admin/user"):
     logging.debug(f'insert: url={url}, name={name}, usage_limit_GB={usage_limit_GB}, package_days={package_days}')
     import uuid as uuid_lib
     uuid = str(uuid_lib.uuid4())
@@ -105,7 +106,7 @@ def insert(url, name, usage_limit_GB, package_days, last_reset_time=None, added_
         logging.error(f'API error: {e}')
     return None
 
-def update(url, uuid, endpoint="admin/user", **kwargs):
+def update(url, uuid, endpoint="/admin/user", **kwargs):
     logging.debug(f'update: url={url}, uuid={uuid}, endpoint={endpoint}, kwargs={kwargs}')
     try:
         user = find(url, uuid, endpoint)
