@@ -1636,10 +1636,7 @@ def callback_query(call: CallbackQuery):
                          reply_markup=plans_markup)
         
     elif key == "server_list_of_users":
-        bot.send_message(call.message.chat.id, MESSAGES['SUCCESS_SEARCH_USER'])
-        logging.error(f'{URL}')
         users_list = api.select(URL)
-        logging.error(f'{users_list}')
         search_mode = "Single"
         if not users_list:
             bot.send_message(call.message.chat.id, MESSAGES['ERROR_USER_NOT_FOUND'])
