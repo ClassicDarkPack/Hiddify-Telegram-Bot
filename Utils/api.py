@@ -1,5 +1,3 @@
-# from config import *
-# from Utils.utils import *
 import re
 import json
 import logging
@@ -8,6 +6,8 @@ import datetime
 import requests
 from config import API_PATH
 import Utils
+from config import *
+from Utils.utils import *
 
 def _fetch_data(url, endpoint, max_retries=3):
     logging.debug(f'fetch url arg: {url}')
@@ -37,26 +37,26 @@ def _fetch_data(url, endpoint, max_retries=3):
     logging.error(f"Maximum retries exceeded for {endpoint}. Returning None.")
     return None
 
-def select(url, endpoint="admin/user/"):
-    logging.debug(f'select: {url}')
+def select(url, endpoint="admin/user"):
     try:
         response = _fetch_data(url, endpoint)
         if response is None:
-            logging.error(f'No response received from the API.')
+            print("No response received from the API.")
             return None
-        logging.debug(f'Response received from API: {response}')
         
-        users_dict = Utils.utils.users_to_dict(response)
+        print("Response received from API:", response)
+        
+        users_dict = users_to_dict(response)
         if not users_dict:
-            logging.error(f'No users found in response.')
+            print("No users found in response.")
             return None
         
-        res = Utils.utils.dict_process(users_dict)
-        logging.debug(f'Processed result: {res}')
+        res = dict_process(url, users_dict, server_id=None)  # ارسال url و users_dict و server_id
         return res
     except Exception as e:
-        logging.error(f'API error: {e}')
+        print("API error:", e)
         return None
+    
 
 def find(url, uuid, endpoint="/user/"):
     logging.debug(f'find: url={url}, uuid={uuid}, endpoint={endpoint}')
