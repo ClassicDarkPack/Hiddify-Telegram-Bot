@@ -60,20 +60,15 @@ def select(url, endpoint="admin/user"):
         logging.error(f"API error: {e}")
         return None
 
-def find(url, uuid, endpoint="/user/"):
+def find(url, uuid, endpoint="admin/user"):
     logging.debug(f'find: url={url}, uuid={uuid}, endpoint={endpoint}')
     try:
-        response = requests.get(url + endpoint, data={"uuid": uuid})
-        jr = response.json()
-        logging.debug(f'Response received: {jr}')
-        if len(jr) != 1:
-            for user in jr:
-                if user['uuid'] == uuid:
-                    logging.debug(f'User found: {user}')
-                    return user
-            logging.debug('No user found with the given UUID.')
+        response = interaction(url, f"{endpoint}/{uuid}", method='GET')
+        if response is None or 'msg' in response and response['msg'] == 'invalid request':
+            logging.error('No user found with the given UUID.')
             return None
-        return jr[0]
+        logging.debug(f'User found: {response}')
+        return response
     except Exception as e:
         logging.error(f'API error: {e}')
         return None
@@ -117,14 +112,14 @@ def insert(url, name, usage_limit_GB, package_days, last_reset_time=None, added_
 def update(url, uuid, endpoint="admin/user", **kwargs):
     logging.debug(f'update: url={url}, uuid={uuid}, endpoint={endpoint}, kwargs={kwargs}')
     try:
-        user = find(url, uuid)
+        user = find(url, uuid, endpoint)
         if not user:
             logging.error('User not found for update.')
             return None
         for key in kwargs:
             user[key] = kwargs[key]
         logging.debug(f'Updated user data: {user}')
-        response = interaction(url, endpoint, method='POST', data=user)
+        response = interaction(url, f"{endpoint}/{uuid}", method='POST', data=user)
         if response is None:
             logging.error("Failed to update data.")
             return None
