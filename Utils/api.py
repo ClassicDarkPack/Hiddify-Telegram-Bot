@@ -7,8 +7,8 @@ from Utils import utils
 from config import API_PATH
 
 def interaction(url, endpoint, method='GET', data=None, max_retries=3, timeout=10):
+    logging.debug(f'base_url: {url}')
     api_url, api_key = utils.extract_api_info(url)
-    api_url = api_url + API_PATH
     logging.debug(f'api_key: {api_key}')
     logging.debug(f'api_url: {api_url}')
     
