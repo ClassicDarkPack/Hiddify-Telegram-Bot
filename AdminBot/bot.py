@@ -1636,6 +1636,7 @@ def callback_query(call: CallbackQuery):
                          reply_markup=plans_markup)
         
     elif key == "server_list_of_users":
+        logging.debug(f'URL {URL}')
         users_list = api.select(URL)
         search_mode = "Single"
         if not users_list:
