@@ -137,7 +137,7 @@ def confirm_add_user(message: Message, server_id):
             bot.send_message(message.chat.id, MESSAGES['ERROR_SERVER_NOT_FOUND'])
             return
         server = server[0]
-        URL = server['url'] + API_PATH
+        URL = server['url']
         res = api.insert(URL, name=add_user_data['name'], package_days=int(add_user_data['usage_days']),
                          usage_limit_GB=int(add_user_data['limit']))
         if res:
@@ -298,7 +298,7 @@ def all_server_search_user_name(message: Message):
     servers = USERS_DB.select_servers()
     if servers:
         for server in servers:
-            URL = server['url'] + API_PATH
+            URL = server['url']
             searched_users = utils.search_user_by_name(URL, searched_name)
             if searched_users:
                 users.extend(searched_users)
@@ -322,7 +322,7 @@ def all_server_search_user_uuid(message: Message):
     servers = USERS_DB.select_servers()
     if servers:
         for server in servers:
-            URL = server['url'] + API_PATH
+            URL = server['url']
             user = utils.search_user_by_uuid(URL, message.text)
             if user:
                 selected_server = server
@@ -348,7 +348,7 @@ def all_server_search_user_config(message: Message):
     servers = USERS_DB.select_servers()
     if servers:
         for server in servers:
-            URL = server['url'] + API_PATH
+            URL = server['url']
             user = utils.search_user_by_config(URL, message.text)
             if user:
                 selected_server = server
@@ -893,7 +893,7 @@ def users_bot_sub_status(message: Message):
     usr = None
     if servers:
         for server in servers:
-            URL = server['url'] + API_PATH
+            URL = server['url']
             usr = utils.user_info(URL, user_uuid)
             if usr:
                 selected_server = server
@@ -1171,7 +1171,7 @@ def callback_query(call: CallbackQuery):
             servers = USERS_DB.select_servers()
             if servers:
                 for server in servers:
-                    URL = server['url'] + API_PATH
+                    URL = server['url']
                     usr = utils.user_info(URL, value)
                     if usr:
                         selected_server = server
@@ -1203,7 +1203,7 @@ def callback_query(call: CallbackQuery):
             servers = USERS_DB.select_servers()
             if servers:
                 for server in servers:
-                    server_url = server['url'] + API_PATH
+                    server_url = server['url']
                     searched_users = utils.search_user_by_name(server_url, searched_name)
                     users_list.extend(searched_users)
             server_id = "None"
@@ -1211,7 +1211,7 @@ def callback_query(call: CallbackQuery):
             servers = USERS_DB.select_servers()
             if servers:
                 for server in servers:
-                    server_url = server['url'] + API_PATH
+                    server_url = server['url']
                     users = api.select(server_url)
                     users = utils.expired_users_list(users)
                     users_list.extend(users)
@@ -1242,9 +1242,9 @@ def callback_query(call: CallbackQuery):
             servers = USERS_DB.select_servers()
             if servers:
                 for server in servers:
-                    users_list = api.find(server['url'] + API_PATH, value)
+                    users_list = api.find(server['url'], value)
                     if users_list:
-                        URL = server['url'] + API_PATH
+                        URL = server['url']
                         selected_server = server
                         break
         bot.edit_message_reply_markup(call.message.chat.id, call.message.message_id,
@@ -1256,9 +1256,9 @@ def callback_query(call: CallbackQuery):
             servers = USERS_DB.select_servers()
             if servers:
                 for server in servers:
-                    users_list = api.find(server['url'] + API_PATH, value)
+                    users_list = api.find(server['url'], value)
                     if users_list:
-                        URL = server['url'] + API_PATH
+                        URL = server['url']
                         selected_server = server
                         break
         bot.edit_message_reply_markup(call.message.chat.id, call.message.message_id,
@@ -1540,7 +1540,7 @@ def callback_query(call: CallbackQuery):
             servers = USERS_DB.select_servers()
             if servers:
                 for server in servers:
-                    server_url = server['url'] + API_PATH
+                    server_url = server['url']
                     users = api.select(server_url)
                     users = utils.expired_users_list(users)
                     users_list.extend(users)
@@ -1562,7 +1562,7 @@ def callback_query(call: CallbackQuery):
             bot.send_message(call.message.chat.id, MESSAGES['ERROR_SERVER_NOT_FOUND'])
             return
         server = server[0]
-        URL = server['url'] + API_PATH
+        URL = server['url']
         selected_server = server
         plans = USERS_DB.select_plans()
         msg = templates.server_info_template(server,plans)

@@ -1,4 +1,3 @@
-import re
 import json
 import logging
 import datetime
@@ -7,29 +6,26 @@ from urllib.parse import urlparse
 from Utils import utils
 from config import API_PATH
 
-def interaction(url, endpoint, method='GET', data=None, max_retries=3):
-    logging.debug(f'fetch url arg: {url}')
-    panel_url = re.sub(r'/api/v2$', '', url)
-    logging.debug(f'panel_url: {panel_url}')
-    api_url = re.sub(r'/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}', '', url)
+def interaction(url, endpoint, method='GET', data=None, max_retries=3, timeout=10):
+    api_key, api_url = utils.extract_api_info(url)
+    api_url = api_url + API_PATH
+    logging.debug(f'api_key: {api_key}')
     logging.debug(f'api_url: {api_url}')
-    url_api = f"{api_url}/{endpoint}"
-    logging.debug(f'url_api: {url_api}')
+    
+    headers = {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Hiddify-API-Key': api_key
+    }
+    
     retries = 0
     while retries < max_retries:
         try:
-            logging.debug(f'Trying to fetch panel response from {panel_url}')
-            panel_response = requests.get(panel_url)
-            panel_response.raise_for_status()
-            cookies = panel_response.cookies
-            logging.debug(f'Cookies extracted for {endpoint}: {cookies}')
-            
-            logging.debug(f'Trying to fetch API response from {url_api}')
+            logging.debug(f'Trying to fetch API response from {api_url}')
             if method == 'GET':
-                response = requests.get(url_api, cookies=cookies)
+                response = requests.get(api_url, headers=headers, timeout=timeout)
             elif method == 'POST':
-                headers = {'Content-Type': 'application/json'}
-                response = requests.post(url_api, cookies=cookies, data=json.dumps(data), headers=headers)
+                response = requests.post(api_url, headers=headers, data=json.dumps(data), timeout=timeout)
             
             response.raise_for_status()
             logging.debug(f'Response received: {response.json()}')
@@ -44,14 +40,14 @@ def select(url, endpoint="admin/user"):
     try:
         response = interaction(url, endpoint)
         if response is None:
-            print("No response received from the API.")
+            logging.error("No response received from the API.")
             return None
         
-        print("Response received from API:", response)
+        logging.info("Response received from API:", response)
         
         users_dict = utils.users_to_dict(response)
         if not users_dict:
-            print("No users found in response.")
+            logging.error("No users found in response.")
             return None
         
         res = utils.dict_process(url, users_dict, server_id=None)  # ارسال url و users_dict و server_id
@@ -64,7 +60,7 @@ def find(url, uuid, endpoint="admin/user"):
     logging.debug(f'find: url={url}, uuid={uuid}, endpoint={endpoint}')
     try:
         response = interaction(url, f"{endpoint}/{uuid}", method='GET')
-        if response is None or 'msg' in response and response['msg'] == 'invalid request':
+        if response is None or ('msg' in response and response.get('msg') == 'invalid request'):
             logging.error('No user found with the given UUID.')
             return None
         logging.debug(f'User found: {response}')
@@ -117,7 +113,8 @@ def update(url, uuid, endpoint="admin/user", **kwargs):
             logging.error('User not found for update.')
             return None
         for key in kwargs:
-            user[key] = kwargs[key]
+            if key in user:
+                user[key] = kwargs[key]
         logging.debug(f'Updated user data: {user}')
         response = interaction(url, f"{endpoint}/{uuid}", method='POST', data=user)
         if response is None:

@@ -7,7 +7,7 @@ import string
 from io import BytesIO
 import re
 from datetime import datetime
-from urllib.parse import urlparse
+from urllib.parse import urlparse, urlunparse
 from Database.dbManager import USERS_DB
 import psutil
 import qrcode
@@ -28,6 +28,13 @@ BASE_URL = urlparse(PANEL_URL).scheme + "://" + urlparse(PANEL_URL).netloc
 # Users directory in panel
 # USERS_DIR = "/admin/user/"
 
+def extract_api_info(url):
+    parsed_url = urlparse(url)
+    path_parts = parsed_url.path.strip('/').split('/')
+    api_key = path_parts[-1] if len(path_parts) > 1 else ''
+    api_url_path = '/'.join(path_parts[:-1])
+    api_url = urlunparse((parsed_url.scheme, parsed_url.netloc, api_url_path, parsed_url.params, parsed_url.query, parsed_url.fragment))
+    return api_url, api_key
 
 # Get request - return request object
 def get_request(url):
