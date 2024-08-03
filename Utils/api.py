@@ -7,7 +7,7 @@ from urllib.parse import urlparse
 from Utils import utils
 from config import API_PATH
 
-def _fetch_data(url, endpoint, max_retries=3):
+def interaction(url, endpoint, method='GET', data=None, max_retries=3):
     logging.debug(f'fetch url arg: {url}')
     panel_url = re.sub(r'/api/v2$', '', url)
     logging.debug(f'panel_url: {panel_url}')
@@ -25,7 +25,12 @@ def _fetch_data(url, endpoint, max_retries=3):
             logging.debug(f'Cookies extracted for {endpoint}: {cookies}')
             
             logging.debug(f'Trying to fetch API response from {url_api}')
-            response = requests.get(url_api, cookies=cookies)
+            if method == 'GET':
+                response = requests.get(url_api, cookies=cookies)
+            elif method == 'POST':
+                headers = {'Content-Type': 'application/json'}
+                response = requests.post(url_api, cookies=cookies, data=json.dumps(data), headers=headers)
+            
             response.raise_for_status()
             logging.debug(f'Response received: {response.json()}')
             return response.json()
@@ -37,7 +42,7 @@ def _fetch_data(url, endpoint, max_retries=3):
 
 def select(url, endpoint="admin/user"):
     try:
-        response = _fetch_data(url, endpoint)
+        response = interaction(url, endpoint)
         if response is None:
             print("No response received from the API.")
             return None
@@ -74,7 +79,7 @@ def find(url, uuid, endpoint="/user/"):
         return None
 
 def insert(url, name, usage_limit_GB, package_days, last_reset_time=None, added_by_uuid=None, mode="no_reset",
-           last_online="1-01-01 00:00:00", telegram_id=None, comment=None, current_usage_GB=0, start_date=None, endpoint="/user/"):
+           last_online="1-01-01 00:00:00", telegram_id=None, comment=None, current_usage_GB=0, start_date=None, endpoint="admin/user"):
     logging.debug(f'insert: url={url}, name={name}, usage_limit_GB={usage_limit_GB}, package_days={package_days}')
     import uuid as uuid_lib
     uuid = str(uuid_lib.uuid4())
@@ -95,18 +100,21 @@ def insert(url, name, usage_limit_GB, package_days, last_reset_time=None, added_
         "current_usage_GB": current_usage_GB,
         "start_date": start_date
     }
-    jdata = json.dumps(data)
-    logging.debug(f'Data to be inserted: {jdata}')
+    logging.debug(f'Data to be inserted: {json.dumps(data)}')
     try:
-        response = requests.post(url + endpoint, data=jdata, headers={'Content-Type': 'application/json'})
-        response.raise_for_status()
-        logging.debug(f'Insert response: {response.json()}')
+        response = interaction(url, endpoint, method='POST', data=data)
+        if response is None:
+            logging.error("Failed to insert data.")
+            return None
+        logging.debug(f'Insert response: {response}')
         return uuid
+    except requests.exceptions.HTTPError as http_err:
+        logging.error(f'HTTP error occurred: {http_err.response.text}')
     except Exception as e:
         logging.error(f'API error: {e}')
-        return None
+    return None
 
-def update(url, uuid, endpoint="/user/", **kwargs):
+def update(url, uuid, endpoint="admin/user", **kwargs):
     logging.debug(f'update: url={url}, uuid={uuid}, endpoint={endpoint}, kwargs={kwargs}')
     try:
         user = find(url, uuid)
@@ -116,9 +124,11 @@ def update(url, uuid, endpoint="/user/", **kwargs):
         for key in kwargs:
             user[key] = kwargs[key]
         logging.debug(f'Updated user data: {user}')
-        response = requests.post(url + endpoint, data=json.dumps(user), headers={'Content-Type': 'application/json'})
-        response.raise_for_status()
-        logging.debug(f'Update response: {response.json()}')
+        response = interaction(url, endpoint, method='POST', data=user)
+        if response is None:
+            logging.error("Failed to update data.")
+            return None
+        logging.debug(f'Update response: {response}')
         return uuid
     except Exception as e:
         logging.error(f'API error: {e}')
