@@ -16,7 +16,7 @@ def interaction(url, endpoint, method='GET', data=None, max_retries=3, timeout=1
     headers = {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'Hiddify-API-Key': api_key
+        'Hiddify-API-Key': api_key  # Ensure API key is added to headers
     }
     
     retries = 0
@@ -27,6 +27,10 @@ def interaction(url, endpoint, method='GET', data=None, max_retries=3, timeout=1
                 response = requests.get(api_url, headers=headers, timeout=timeout)
             elif method == 'POST':
                 response = requests.post(api_url, headers=headers, data=json.dumps(data), timeout=timeout)
+            elif method == 'PUT':  # Added support for PUT requests
+                response = requests.put(api_url, headers=headers, data=json.dumps(data), timeout=timeout)
+            elif method == 'DELETE':  # Added support for DELETE requests
+                response = requests.delete(api_url, headers=headers, timeout=timeout)
             
             response.raise_for_status()
             logging.debug(f'Response received: {response.json()}')
@@ -51,7 +55,7 @@ def select(url, endpoint="/admin/user"):
             logging.error("No users found in response.")
             return None
         
-        res = utils.dict_process(url, users_dict, server_id=None)  # ارسال url و users_dict و server_id
+        res = utils.dict_process(url, users_dict, server_id=None)  # Process users from response
         return res
     except Exception as e:
         logging.error(f"API error: {e}")
@@ -75,7 +79,7 @@ def insert(url, name, usage_limit_GB, package_days, last_reset_time=None, added_
     logging.debug(f'insert: url={url}, name={name}, usage_limit_GB={usage_limit_GB}, package_days={package_days}')
     import uuid as uuid_lib
     uuid = str(uuid_lib.uuid4())
-    added_by_uuid = urlparse(url).path.split('/')[2]
+    added_by_uuid = urlparse(url).path.split('/')[2]  # Extract added_by_uuid from the URL path
     last_reset_time = datetime.datetime.now().strftime("%Y-%m-%d")
 
     data = {
@@ -115,9 +119,9 @@ def update(url, uuid, endpoint="/admin/user", **kwargs):
             return None
         for key in kwargs:
             if key in user:
-                user[key] = kwargs[key]
+                user[key] = kwargs[key]  # Update user data with new values
         logging.debug(f'Updated user data: {user}')
-        response = interaction(url, f"{endpoint}/{uuid}", method='POST', data=user)
+        response = interaction(url, f"{endpoint}/{uuid}", method='PUT', data=user)  # Use PUT method for updates
         if response is None:
             logging.error("Failed to update data.")
             return None
