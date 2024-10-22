@@ -7,7 +7,7 @@ import time
 import telebot
 import os
 from telebot.types import Message, CallbackQuery
-
+from Utils.api import update_user_details
 from config import TELEGRAM_TOKEN, ADMINS_ID, PANEL_ADMIN_ID, CLIENT_TOKEN, BOT_BACKUP_LOC
 from AdminBot.content import BOT_COMMANDS, MESSAGES, KEY_MARKUP
 from AdminBot import markups
@@ -163,15 +163,20 @@ def confirm_add_user(message: Message, server_id):
 def edit_user_name(message: Message, uuid):
     if is_it_cancel(message):
         return
+    
     msg_wait = bot.send_message(message.chat.id, MESSAGES['WAIT'], reply_markup=markups.while_edit_user_markup())
-    # status = ADMIN_DB.edit_user(uuid, name=message.text)
-    status = api.update(URL, uuid, name=message.text)
+    
+    # فراخوانی API هیدیفای برای به‌روزرسانی نام کاربر
+    status = update_user_details(uuid, name=message.text)
+
     bot.delete_message(message.chat.id, msg_wait.message_id)
+
     if not status:
         bot.send_message(message.chat.id, MESSAGES['ERROR_UNKNOWN'], reply_markup=markups.main_menu_keyboard_markup())
         return
-    bot.send_message(message.chat.id, f"{MESSAGES['SUCCESS_USER_NAME_EDITED']} {message.text} ",
-                     reply_markup=markups.main_menu_keyboard_markup())
+
+    bot.send_message(message.chat.id, f"{MESSAGES['SUCCESS_USER_NAME_EDITED']} {message.text}", reply_markup=markups.main_menu_keyboard_markup())
+
 
 
 # Edit User - Usage
